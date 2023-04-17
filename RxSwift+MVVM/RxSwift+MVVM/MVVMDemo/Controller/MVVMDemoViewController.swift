@@ -35,9 +35,15 @@ class MVVMDemoViewController: UIViewController, UIScrollViewDelegate {
         
         //先绑定数据
             viewModel.items.bind(to: tableView.rx.items(cellIdentifier: "ProductTableViewCell", cellType: ProductTableViewCell.self)) { (row,item,cell) in
+                
+                
                 cell.item = item
             }.disposed(by: bag)
             tableView.rx.modelSelected(Product.self).subscribe(onNext: { item in
+                
+                guard let indexPath = self.tableView.indexPathForSelectedRow else { return }
+
+                print("Selected model at indexPath: \(indexPath)")
                 print("SelectedItem: \(item.name)")
             }).disposed(by: bag)
         
